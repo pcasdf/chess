@@ -17,6 +17,7 @@ const App = () => {
     let rowDiff = row - nextRow;
     let colDiff = col - nextCol;
 
+    //pawn movement
     if (activePiece.piece.type === 'pawn') {
       if (activePiece.piece.color === 'white') {
         if (rowDiff === 1 || (rowDiff === 2 && row === '6')) {
@@ -49,97 +50,220 @@ const App = () => {
       }
     }
 
+    //bishop movement
     if (activePiece.piece.type === 'bishop') {
-      //white bishop
-      if (activePiece.piece.color === 'white') {
-        if (rowDiff) {
-          if (rowDiff > 0 && colDiff < 0 && rowDiff === -colDiff) {
-            for (let i = 1; i < rowDiff; i++) {
-              if (board[+row - i][+col + i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'white') {
+      if (rowDiff) {
+        if (rowDiff > 0 && colDiff < 0 && rowDiff === -colDiff) {
+          for (let i = 1; i < rowDiff; i++) {
+            if (board[+row - i][+col + i].piece) {
               return false;
             }
-            return true;
-          } else if (rowDiff < 0 && colDiff > 0 && rowDiff === -colDiff) {
-            for (let i = 1; i < -rowDiff; i++) {
-              if (board[+row + i][+col - i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'white') {
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (rowDiff < 0 && colDiff > 0 && rowDiff === -colDiff) {
+          for (let i = 1; i < -rowDiff; i++) {
+            if (board[+row + i][+col - i].piece) {
               return false;
             }
-            return true;
-          } else if (rowDiff > 0 && colDiff > 0 && rowDiff === colDiff) {
-            for (let i = 1; i < rowDiff; i++) {
-              if (board[+row - i][+col - i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'white') {
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (rowDiff > 0 && colDiff > 0 && rowDiff === colDiff) {
+          for (let i = 1; i < rowDiff; i++) {
+            if (board[+row - i][+col - i].piece) {
               return false;
             }
-            return true;
-          } else if (rowDiff < 0 && colDiff < 0 && rowDiff === colDiff) {
-            for (let i = 1; i < -rowDiff; i++) {
-              if (board[+row + i][+col + i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'white') {
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (rowDiff < 0 && colDiff < 0 && rowDiff === colDiff) {
+          for (let i = 1; i < -rowDiff; i++) {
+            if (board[+row + i][+col + i].piece) {
               return false;
             }
-            return true;
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        }
+      }
+    }
+
+    // knight movement
+    if (activePiece.piece.type === 'knight') {
+      if (rowDiff) {
+        if (
+          ((rowDiff === 2 || rowDiff === -2) &&
+            (colDiff === 1 || colDiff === -1)) ||
+          ((rowDiff === 1 || rowDiff === -1) &&
+            (colDiff === 2 || colDiff === -2))
+        ) {
+          if (square.piece && square.piece.color === activePlayer) {
+            return false;
+          }
+          return true;
+        }
+      }
+    }
+
+    // queen movement
+
+    if (activePiece.piece.type === 'queen') {
+      if (rowDiff > 0 && colDiff < 0 && rowDiff === -colDiff) {
+        for (let i = 1; i < rowDiff; i++) {
+          if (board[+row - i][+col + i].piece) {
+            return false;
           }
         }
-      } else {
-        //black bishop
-        if (rowDiff) {
-          if (rowDiff > 0 && colDiff < 0 && rowDiff === -colDiff) {
-            for (let i = 1; i < rowDiff; i++) {
-              if (board[+row - i][+col + i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'black') {
-              return false;
-            }
-            return true;
-          } else if (rowDiff < 0 && colDiff > 0 && rowDiff === -colDiff) {
-            for (let i = 1; i < -rowDiff; i++) {
-              if (board[+row + i][+col - i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'black') {
-              return false;
-            }
-            return true;
-          } else if (rowDiff > 0 && colDiff > 0 && rowDiff === colDiff) {
-            for (let i = 1; i < rowDiff; i++) {
-              if (board[+row - i][+col - i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'black') {
-              return false;
-            }
-            return true;
-          } else if (rowDiff < 0 && colDiff < 0 && rowDiff === colDiff) {
-            for (let i = 1; i < -rowDiff; i++) {
-              if (board[+row + i][+col + i].piece) {
-                return false;
-              }
-            }
-            if (square.piece && square.piece.color === 'black') {
-              return false;
-            }
-            return true;
+        if (square.piece && activePlayer === square.piece.color) {
+          return false;
+        }
+        return true;
+      } else if (rowDiff < 0 && colDiff > 0 && rowDiff === -colDiff) {
+        for (let i = 1; i < -rowDiff; i++) {
+          if (board[+row + i][+col - i].piece) {
+            return false;
           }
         }
+        if (square.piece && activePlayer === square.piece.color) {
+          return false;
+        }
+        return true;
+      } else if (rowDiff > 0 && colDiff > 0 && rowDiff === colDiff) {
+        for (let i = 1; i < rowDiff; i++) {
+          if (board[+row - i][+col - i].piece) {
+            return false;
+          }
+        }
+        if (square.piece && activePlayer === square.piece.color) {
+          return false;
+        }
+        return true;
+      } else if (rowDiff < 0 && colDiff < 0 && rowDiff === colDiff) {
+        for (let i = 1; i < -rowDiff; i++) {
+          if (board[+row + i][+col + i].piece) {
+            return false;
+          }
+        }
+        if (square.piece && activePlayer === square.piece.color) {
+          return false;
+        }
+        return true;
+      }
+
+      if (!colDiff) {
+        if (rowDiff > 0) {
+          for (let i = 1; i < rowDiff; i++) {
+            if (board[+row - i][+col].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (rowDiff < 0) {
+          for (let i = 1; i < -rowDiff; i++) {
+            if (board[+row + i][+col].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        }
+      } else if (!rowDiff) {
+        if (colDiff > 0) {
+          for (let i = 1; i < colDiff; i++) {
+            if (board[+row][+col - i].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (colDiff < 0) {
+          for (let i = 1; i < -colDiff; i++) {
+            if (board[+row][+col + i].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        }
+      }
+    }
+
+    // rook movement
+
+    if (activePiece.piece.type === 'rook') {
+      if (!colDiff) {
+        if (rowDiff > 0) {
+          for (let i = 1; i < rowDiff; i++) {
+            if (board[+row - i][+col].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (rowDiff < 0) {
+          for (let i = 1; i < -rowDiff; i++) {
+            if (board[+row + i][+col].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        }
+      } else if (!rowDiff) {
+        if (colDiff > 0) {
+          for (let i = 1; i < colDiff; i++) {
+            if (board[+row][+col - i].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        } else if (colDiff < 0) {
+          for (let i = 1; i < -colDiff; i++) {
+            if (board[+row][+col + i].piece) {
+              return false;
+            }
+          }
+          if (square.piece && activePlayer === square.piece.color) {
+            return false;
+          }
+          return true;
+        }
+      }
+    }
+
+    // king movement
+
+    if (activePiece.piece.type === 'king') {
+      if (colDiff <= 1 && colDiff >= -1 && rowDiff <= 1 && rowDiff >= -1) {
+        if (square.piece && square.piece.color === activePlayer) {
+          return false;
+        }
+        return true;
       }
     }
 
