@@ -43,8 +43,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -80,8 +81,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -117,8 +119,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -154,8 +157,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -186,7 +190,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (right.piece.type === 'queen' || right.piece.type === 'rook') {
+              if (
+                (right.piece.type === 'queen' || right.piece.type === 'rook') &&
+                right.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -212,7 +219,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (left.piece.type === 'queen' || left.piece.type === 'rook') {
+              if (
+                (left.piece.type === 'queen' || left.piece.type === 'rook') &&
+                left.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -238,7 +248,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (above.piece.type === 'queen' || above.piece.type === 'rook') {
+              if (
+                (above.piece.type === 'queen' || above.piece.type === 'rook') &&
+                above.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -264,7 +277,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (below.piece.type === 'queen' || below.piece.type === 'rook') {
+              if (
+                (below.piece.type === 'queen' || below.piece.type === 'rook') &&
+                below.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -314,8 +330,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -351,8 +368,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -388,8 +406,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -425,8 +444,9 @@ const App = () => {
                   return false;
                 }
                 if (
-                  diagonal.piece.type === 'queen' ||
-                  diagonal.piece.type === 'bishop'
+                  (diagonal.piece.type === 'queen' ||
+                    diagonal.piece.type === 'bishop') &&
+                  diagonal.square !== square.square
                 ) {
                   return true;
                 }
@@ -457,7 +477,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (right.piece.type === 'queen' || right.piece.type === 'rook') {
+              if (
+                (right.piece.type === 'queen' || right.piece.type === 'rook') &&
+                right.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -483,7 +506,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (left.piece.type === 'queen' || left.piece.type === 'rook') {
+              if (
+                (left.piece.type === 'queen' || left.piece.type === 'rook') &&
+                left.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -509,7 +535,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (above.piece.type === 'queen' || above.piece.type === 'rook') {
+              if (
+                (above.piece.type === 'queen' || above.piece.type === 'rook') &&
+                above.square !== square.square
+              ) {
                 return true;
               }
             }
@@ -535,7 +564,10 @@ const App = () => {
               ) {
                 return false;
               }
-              if (below.piece.type === 'queen' || below.piece.type === 'rook') {
+              if (
+                (below.piece.type === 'queen' || below.piece.type === 'rook') &&
+                below.square !== square.square
+              ) {
                 return true;
               }
             }
