@@ -165,11 +165,107 @@ const App = () => {
         }
       };
 
+      const checkRight = () => {
+        for (let i = 1; col + i <= 7; i++) {
+          let right = board[row][col + i];
+          if (right.piece) {
+            if (right.piece.color === 'white' && right.piece.type !== 'king') {
+              return false;
+            }
+            if (right.piece.color === 'black') {
+              if (
+                right.piece.type === 'pawn' ||
+                right.piece.type === 'bishop' ||
+                right.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (right.piece.type === 'queen' || right.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkLeft = () => {
+        for (let i = 1; col - i >= 0; i++) {
+          let left = board[row][col - i];
+          if (left.piece) {
+            if (left.piece.color === 'white' && left.piece.type !== 'king') {
+              return false;
+            }
+            if (left.piece.color === 'black') {
+              if (
+                left.piece.type === 'pawn' ||
+                left.piece.type === 'bishop' ||
+                left.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (left.piece.type === 'queen' || left.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkAbove = () => {
+        for (let i = 1; row - i >= 0; i++) {
+          let above = board[row - i][col];
+          if (above.piece) {
+            if (above.piece.color === 'white' && above.piece.type !== 'king') {
+              return false;
+            }
+            if (above.piece.color === 'black') {
+              if (
+                above.piece.type === 'pawn' ||
+                above.piece.type === 'bishop' ||
+                above.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (above.piece.type === 'queen' || above.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkBelow = () => {
+        for (let i = 1; row + i <= 7; i++) {
+          let below = board[row + i][col];
+          if (below.piece) {
+            if (below.piece.color === 'white' && below.piece.type !== 'king') {
+              return false;
+            }
+            if (below.piece.color === 'black') {
+              if (
+                below.piece.type === 'pawn' ||
+                below.piece.type === 'bishop' ||
+                below.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (below.piece.type === 'queen' || below.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
       if (
         checkAboveRight() ||
         checkAboveLeft() ||
         checkBelowRight() ||
-        checkBelowLeft()
+        checkBelowLeft() ||
+        checkRight() ||
+        checkLeft() ||
+        checkAbove() ||
+        checkBelow()
       ) {
         return true;
       }
@@ -323,11 +419,107 @@ const App = () => {
         }
       };
 
+      const checkRight = () => {
+        for (let i = 1; col + i <= 7; i++) {
+          let right = board[row][col + i];
+          if (right.piece) {
+            if (right.piece.color === 'black' && right.piece.type !== 'king') {
+              return false;
+            }
+            if (right.piece.color === 'white') {
+              if (
+                right.piece.type === 'pawn' ||
+                right.piece.type === 'bishop' ||
+                right.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (right.piece.type === 'queen' || right.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkLeft = () => {
+        for (let i = 1; col - i >= 0; i++) {
+          let left = board[row][col - i];
+          if (left.piece) {
+            if (left.piece.color === 'black' && left.piece.type !== 'king') {
+              return false;
+            }
+            if (left.piece.color === 'white') {
+              if (
+                left.piece.type === 'pawn' ||
+                left.piece.type === 'bishop' ||
+                left.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (left.piece.type === 'queen' || left.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkAbove = () => {
+        for (let i = 1; row - i >= 0; i++) {
+          let above = board[row - i][col];
+          if (above.piece) {
+            if (above.piece.color === 'black' && above.piece.type !== 'king') {
+              return false;
+            }
+            if (above.piece.color === 'white') {
+              if (
+                above.piece.type === 'pawn' ||
+                above.piece.type === 'bishop' ||
+                above.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (above.piece.type === 'queen' || above.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkBelow = () => {
+        for (let i = 1; row + i <= 7; i++) {
+          let below = board[row + i][col];
+          if (below.piece) {
+            if (below.piece.color === 'black' && below.piece.type !== 'king') {
+              return false;
+            }
+            if (below.piece.color === 'white') {
+              if (
+                below.piece.type === 'pawn' ||
+                below.piece.type === 'bishop' ||
+                below.piece.type === 'knight'
+              ) {
+                return false;
+              }
+              if (below.piece.type === 'queen' || below.piece.type === 'rook') {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
       if (
         checkAboveRight() ||
         checkAboveLeft() ||
         checkBelowRight() ||
-        checkBelowLeft()
+        checkBelowLeft() ||
+        checkRight() ||
+        checkLeft() ||
+        checkAbove() ||
+        checkBelow()
       ) {
         return true;
       }
