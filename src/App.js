@@ -12,10 +12,223 @@ const App = () => {
   const [activePiece, setActivePiece] = useState(null);
   const [board, setBoard] = useState(INITIAL_BOARD);
 
-  const willCheck = (square, piece) => {
+  const willCheck = (square, piece, square2) => {
     let [row, col] = square.square;
     row = +row;
     col = +col;
+
+    // pawn putting king into check
+    if (piece.type === 'pawn' && piece.color === 'white') {
+      let [row, col] = square2.square;
+      row = +row;
+      col = +col;
+
+      const checkAboveRight = () => {
+        for (let i = 1; row - i >= 0; i++) {
+          if (col + i <= 7) {
+            let diagonal = board[row - i][col + i];
+            if (diagonal.piece) {
+              if (
+                diagonal.piece.color === 'white' &&
+                diagonal.piece.type !== 'king'
+              ) {
+                return false;
+              }
+              if (diagonal.piece.color === 'black') {
+                if (
+                  diagonal.piece.type === 'pawn' ||
+                  diagonal.piece.type === 'rook' ||
+                  diagonal.piece.type === 'knight'
+                ) {
+                  return false;
+                }
+                if (
+                  diagonal.piece.type === 'queen' ||
+                  diagonal.piece.type === 'bishop'
+                ) {
+                  return true;
+                }
+              }
+              if (
+                diagonal.piece.type === 'king' &&
+                diagonal.piece.color === 'white'
+              ) {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkBelowLeft = () => {
+        for (let i = 1; row + i <= 7; i++) {
+          if (col - i >= 0) {
+            let diagonal = board[row + i][col - i];
+            if (diagonal.piece) {
+              if (
+                diagonal.piece.color === 'white' &&
+                diagonal.piece.type !== 'king'
+              ) {
+                return false;
+              }
+              if (diagonal.piece.color === 'black') {
+                if (
+                  diagonal.piece.type === 'pawn' ||
+                  diagonal.piece.type === 'rook' ||
+                  diagonal.piece.type === 'knight'
+                ) {
+                  return false;
+                }
+                if (
+                  diagonal.piece.type === 'queen' ||
+                  diagonal.piece.type === 'bishop'
+                ) {
+                  return true;
+                }
+              }
+              if (
+                diagonal.piece.type === 'king' &&
+                diagonal.piece.color === 'white'
+              ) {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkBelowRight = () => {
+        for (let i = 1; row + i <= 7; i++) {
+          if (col + i <= 7) {
+            let diagonal = board[row + i][col + i];
+            if (diagonal.piece) {
+              if (
+                diagonal.piece.color === 'white' &&
+                diagonal.piece.type !== 'king'
+              ) {
+                return false;
+              }
+              if (diagonal.piece.color === 'black') {
+                if (
+                  diagonal.piece.type === 'pawn' ||
+                  diagonal.piece.type === 'rook' ||
+                  diagonal.piece.type === 'knight'
+                ) {
+                  return false;
+                }
+                if (
+                  diagonal.piece.type === 'queen' ||
+                  diagonal.piece.type === 'bishop'
+                ) {
+                  return true;
+                }
+              }
+              if (
+                diagonal.piece.type === 'king' &&
+                diagonal.piece.color === 'white'
+              ) {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      const checkAboveLeft = () => {
+        for (let i = 1; row - i >= 0; i++) {
+          if (col - i >= 0) {
+            let diagonal = board[row - i][col - i];
+            if (diagonal.piece) {
+              if (
+                diagonal.piece.color === 'white' &&
+                diagonal.piece.type !== 'king'
+              ) {
+                return false;
+              }
+              if (diagonal.piece.color === 'black') {
+                if (
+                  diagonal.piece.type === 'pawn' ||
+                  diagonal.piece.type === 'rook' ||
+                  diagonal.piece.type === 'knight'
+                ) {
+                  return false;
+                }
+                if (
+                  diagonal.piece.type === 'queen' ||
+                  diagonal.piece.type === 'bishop'
+                ) {
+                  return true;
+                }
+              }
+              if (
+                diagonal.piece.type === 'king' &&
+                diagonal.piece.color === 'white'
+              ) {
+                return true;
+              }
+            }
+          }
+        }
+      };
+
+      if (
+        (checkAboveRight() && checkBelowLeft()) ||
+        (checkAboveLeft() && checkBelowRight())
+      ) {
+        console.log('check');
+        return true;
+      }
+
+      return false;
+    }
+
+    // pawn checks
+    if (piece.type === 'pawn' && piece.color === 'white') {
+      let leftCorner = board[row - 1][col - 1];
+      let rightCorner = board[row - 1][col + 1];
+      if (leftCorner) {
+        if (leftCorner.piece && leftCorner.piece.color === 'black') {
+          if (leftCorner.piece.type === 'king') {
+            setIsCheck(true);
+
+            return false;
+          }
+        }
+      }
+      if (rightCorner) {
+        if (rightCorner.piece && rightCorner.piece.color === 'black') {
+          if (rightCorner.piece.type === 'king') {
+            setIsCheck(true);
+
+            return false;
+          }
+        }
+      }
+    }
+
+    if (piece.type === 'pawn' && piece.color === 'black') {
+      let leftCorner = board[row - 1][col - 1];
+      let rightCorner = board[row - 1][col + 1];
+      if (leftCorner) {
+        if (leftCorner.piece && leftCorner.piece.color === 'white') {
+          if (leftCorner.piece.type === 'king') {
+            setIsCheck(true);
+
+            return false;
+          }
+        }
+      }
+      if (rightCorner) {
+        if (rightCorner.piece && rightCorner.piece.color === 'white') {
+          if (rightCorner.piece.type === 'king') {
+            setIsCheck(true);
+
+            return false;
+          }
+        }
+      }
+    }
+
     // white king rules
     if (piece.type === 'king' && piece.color === 'white') {
       // check for enemy pawns
@@ -803,9 +1016,10 @@ const App = () => {
       }
     } else {
       const copy = activePiece.piece;
+      const copy2 = activePiece;
 
       if (checkLegal(square)) {
-        if (!willCheck(square, copy)) {
+        if (!willCheck(square, copy, copy2)) {
           setBoard(prevBoard => {
             const [row, col] = square.square;
             const [prevRow, prevCol] = activePiece.square;
