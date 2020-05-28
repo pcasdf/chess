@@ -11,6 +11,13 @@ const App = () => {
   const [board, setBoard] = useState(INITIAL_BOARD);
   const [previousState, setPreviousState] = useState(null);
   const [index, setIndex] = useState(0);
+  const [history, setHistory] = useState([
+    {
+      boardState: JSON.parse(JSON.stringify(INITIAL_BOARD)),
+      isCheckState: false,
+      activePlayerState: activePlayer
+    }
+  ]);
 
   const checkIsCheck = useCallback(
     data => {
@@ -1137,13 +1144,30 @@ const App = () => {
 
       if (checkLegal(square)) {
         if (!willCheck(square, copy, copy2) && !checkIsCheck(board)) {
-          setBoard(prevBoard => {
-            const [row, col] = square.square;
-            const [prevRow, prevCol] = activePiece.square;
-            prevBoard[row][col].piece = copy;
-            prevBoard[prevRow][prevCol].piece = null;
-            return prevBoard;
-          });
+          let prevBoard = JSON.parse(JSON.stringify(board));
+          const [row, col] = square.square;
+          const [prevRow, prevCol] = activePiece.square;
+          prevBoard[prevRow][prevCol].piece = null;
+          prevBoard[row][col].piece = copy;
+
+          let activePlayerState;
+
+          if (activePlayer === 'white') {
+            activePlayerState = 'black';
+          } else {
+            activePlayerState = 'white';
+          }
+
+          setBoard(prevBoard);
+          setHistory([
+            ...history.slice(0, index + 1),
+            {
+              boardState: prevBoard,
+              isCheckState: isCheck,
+              activePlayerState
+            }
+          ]);
+          setIndex(index => index + 1);
 
           if (activePlayer === 'white') {
             setActivePlayer('black');
@@ -1152,13 +1176,30 @@ const App = () => {
           }
         } else {
           if (willStopCheck(square, copy, copy2)) {
-            setBoard(prevBoard => {
-              const [row, col] = square.square;
-              const [prevRow, prevCol] = activePiece.square;
-              prevBoard[prevRow][prevCol].piece = null;
-              prevBoard[row][col].piece = copy;
-              return prevBoard;
-            });
+            let prevBoard = JSON.parse(JSON.stringify(board));
+            const [row, col] = square.square;
+            const [prevRow, prevCol] = activePiece.square;
+            prevBoard[prevRow][prevCol].piece = null;
+            prevBoard[row][col].piece = copy;
+
+            let activePlayerState;
+
+            if (activePlayer === 'white') {
+              activePlayerState = 'black';
+            } else {
+              activePlayerState = 'white';
+            }
+
+            setBoard(prevBoard);
+            setHistory([
+              ...history.slice(0, index + 1),
+              {
+                boardState: prevBoard,
+                isCheckState: isCheck,
+                activePlayerState
+              }
+            ]);
+            setIndex(index => index + 1);
 
             if (activePlayer === 'white') {
               setActivePlayer('black');
@@ -1174,10 +1215,27 @@ const App = () => {
   };
 
   const handlePrevious = () => {
-    const { lastBoard, lastIsCheck, lastActivePlayer } = previousState;
-    setBoard(lastBoard);
-    setIsCheck(lastIsCheck);
-    setActivePlayer(lastActivePlayer);
+    if (index > 0) {
+      const { boardState, isCheckState, activePlayerState } = history[
+        index - 1
+      ];
+      setIndex(index => index - 1);
+      setBoard(JSON.parse(JSON.stringify(boardState)));
+      setIsCheck(isCheckState);
+      setActivePlayer(activePlayerState);
+    }
+  };
+
+  const handleNext = () => {
+    if (index < history.length - 1) {
+      const { boardState, isCheckState, activePlayerState } = history[
+        index + 1
+      ];
+      setIndex(index => index + 1);
+      setBoard(JSON.parse(JSON.stringify(boardState)));
+      setIsCheck(isCheckState);
+      setActivePlayer(activePlayerState);
+    }
   };
 
   useEffect(() => {
@@ -1186,6 +1244,7 @@ const App = () => {
     } else {
       setIsCheck(false);
     }
+
     console.log(checkIsCheck(board));
   }, [board, checkIsCheck]);
 
@@ -1196,6 +1255,7 @@ const App = () => {
         {isCheck && ', check'}
       </h1>
       <button onClick={handlePrevious}>Previous</button>
+      <button onClick={handleNext}>Next</button>
       <div className='game'>
         {board.map(row => (
           <div className='row'>
