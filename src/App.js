@@ -9,6 +9,8 @@ const App = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [activePiece, setActivePiece] = useState(null);
   const [board, setBoard] = useState(INITIAL_BOARD);
+  const [previousState, setPreviousState] = useState(null);
+  const [index, setIndex] = useState(0);
 
   const checkIsCheck = useCallback(
     data => {
@@ -1123,6 +1125,13 @@ const App = () => {
         setActivePiece(square);
       }
     } else {
+      const boardCopy = JSON.parse(JSON.stringify(board));
+      setPreviousState({
+        lastBoard: boardCopy,
+        lastActivePlayer: activePlayer,
+        lastIsCheck: isCheck
+      });
+
       const copy = activePiece.piece;
       const copy2 = activePiece;
 
@@ -1164,6 +1173,13 @@ const App = () => {
     }
   };
 
+  const handlePrevious = () => {
+    const { lastBoard, lastIsCheck, lastActivePlayer } = previousState;
+    setBoard(lastBoard);
+    setIsCheck(lastIsCheck);
+    setActivePlayer(lastActivePlayer);
+  };
+
   useEffect(() => {
     if (checkIsCheck(board)) {
       setIsCheck(true);
@@ -1175,17 +1191,28 @@ const App = () => {
 
   return (
     <div className='board'>
-      <h1>{activePlayer}</h1>
-      {isCheck && <h3>Check</h3>}
-      {board.map(row => (
-        <div className='row'>
-          {row.map(square => (
-            <div className='square' onClick={() => handleClick(square)}>
-              {square.piece && <img className='piece' src={square.piece.svg} />}
-            </div>
-          ))}
-        </div>
-      ))}
+      <h1>
+        {activePlayer}
+        {isCheck && ', check'}
+      </h1>
+      <button onClick={handlePrevious}>Previous</button>
+      <div className='game'>
+        {board.map(row => (
+          <div className='row'>
+            {row.map(square => (
+              <div
+                style={{ background: `${square.bg}` }}
+                className='square'
+                onClick={() => handleClick(square)}
+              >
+                {square.piece && (
+                  <img className='piece' src={square.piece.svg} />
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

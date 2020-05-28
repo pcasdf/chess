@@ -2,6 +2,7 @@ const INITIAL_BOARD = [
   [
     {
       square: '00',
+      bg: '#cccccc',
       piece: {
         type: 'rook',
         color: 'black',
@@ -11,6 +12,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '01',
+      bg: '#ffffff',
       piece: {
         type: 'knight',
         color: 'black',
@@ -20,6 +22,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '02',
+      bg: '#cccccc',
       piece: {
         type: 'bishop',
         color: 'black',
@@ -29,6 +32,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '03',
+      bg: '#ffffff',
       piece: {
         type: 'queen',
         color: 'black',
@@ -38,6 +42,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '04',
+      bg: '#cccccc',
       piece: {
         type: 'king',
         color: 'black',
@@ -47,6 +52,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '05',
+      bg: '#ffffff',
       piece: {
         type: 'bishop',
         color: 'black',
@@ -56,6 +62,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '06',
+      bg: '#cccccc',
       piece: {
         type: 'knight',
         color: 'black',
@@ -65,6 +72,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '07',
+      bg: '#ffffff',
       piece: {
         type: 'rook',
         color: 'black',
@@ -76,6 +84,7 @@ const INITIAL_BOARD = [
   [
     {
       square: '10',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -85,6 +94,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '11',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -94,6 +104,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '12',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -103,6 +114,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '13',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -112,6 +124,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '14',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -121,6 +134,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '15',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -130,6 +144,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '16',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -139,6 +154,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '17',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'black',
@@ -148,48 +164,49 @@ const INITIAL_BOARD = [
     }
   ],
   [
-    { square: '20', piece: null },
-    { square: '21', piece: null },
-    { square: '22', piece: null },
-    { square: '23', piece: null },
-    { square: '24', piece: null },
-    { square: '25', piece: null },
-    { square: '26', piece: null },
-    { square: '27', piece: null }
+    { square: '20', bg: '#cccccc', piece: null },
+    { square: '21', bg: '#ffffff', piece: null },
+    { square: '22', bg: '#cccccc', piece: null },
+    { square: '23', bg: '#ffffff', piece: null },
+    { square: '24', bg: '#cccccc', piece: null },
+    { square: '25', bg: '#ffffff', piece: null },
+    { square: '26', bg: '#cccccc', piece: null },
+    { square: '27', bg: '#ffffff', piece: null }
   ],
   [
-    { square: '30', piece: null },
-    { square: '31', piece: null },
-    { square: '32', piece: null },
-    { square: '33', piece: null },
-    { square: '34', piece: null },
-    { square: '35', piece: null },
-    { square: '36', piece: null },
-    { square: '37', piece: null }
+    { square: '30', bg: '#ffffff', piece: null },
+    { square: '31', bg: '#cccccc', piece: null },
+    { square: '32', bg: '#ffffff', piece: null },
+    { square: '33', bg: '#cccccc', piece: null },
+    { square: '34', bg: '#ffffff', piece: null },
+    { square: '35', bg: '#cccccc', piece: null },
+    { square: '36', bg: '#ffffff', piece: null },
+    { square: '37', bg: '#cccccc', piece: null }
   ],
   [
-    { square: '40', piece: null },
-    { square: '41', piece: null },
-    { square: '42', piece: null },
-    { square: '43', piece: null },
-    { square: '44', piece: null },
-    { square: '45', piece: null },
-    { square: '46', piece: null },
-    { square: '47', piece: null }
+    { square: '40', bg: '#cccccc', piece: null },
+    { square: '41', bg: '#ffffff', piece: null },
+    { square: '42', bg: '#cccccc', piece: null },
+    { square: '43', bg: '#ffffff', piece: null },
+    { square: '44', bg: '#cccccc', piece: null },
+    { square: '45', bg: '#ffffff', piece: null },
+    { square: '46', bg: '#cccccc', piece: null },
+    { square: '47', bg: '#ffffff', piece: null }
   ],
   [
-    { square: '50', piece: null },
-    { square: '51', piece: null },
-    { square: '52', piece: null },
-    { square: '53', piece: null },
-    { square: '54', piece: null },
-    { square: '55', piece: null },
-    { square: '56', piece: null },
-    { square: '57', piece: null }
+    { square: '50', bg: '#ffffff', piece: null },
+    { square: '51', bg: '#cccccc', piece: null },
+    { square: '52', bg: '#ffffff', piece: null },
+    { square: '53', bg: '#cccccc', piece: null },
+    { square: '54', bg: '#ffffff', piece: null },
+    { square: '55', bg: '#cccccc', piece: null },
+    { square: '56', bg: '#ffffff', piece: null },
+    { square: '57', bg: '#cccccc', piece: null }
   ],
   [
     {
       square: '60',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -199,6 +216,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '61',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -208,6 +226,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '62',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -217,6 +236,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '63',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -226,6 +246,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '64',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -235,6 +256,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '65',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -244,6 +266,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '66',
+      bg: '#cccccc',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -253,6 +276,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '67',
+      bg: '#ffffff',
       piece: {
         type: 'pawn',
         color: 'white',
@@ -264,6 +288,7 @@ const INITIAL_BOARD = [
   [
     {
       square: '70',
+      bg: '#ffffff',
       piece: {
         type: 'rook',
         color: 'white',
@@ -273,6 +298,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '71',
+      bg: '#cccccc',
       piece: {
         type: 'knight',
         color: 'white',
@@ -282,6 +308,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '72',
+      bg: '#ffffff',
       piece: {
         type: 'bishop',
         color: 'white',
@@ -291,6 +318,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '73',
+      bg: '#cccccc',
       piece: {
         type: 'queen',
         color: 'white',
@@ -300,6 +328,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '74',
+      bg: '#ffffff',
       piece: {
         type: 'king',
         color: 'white',
@@ -309,6 +338,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '75',
+      bg: '#cccccc',
       piece: {
         type: 'bishop',
         color: 'white',
@@ -318,6 +348,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '76',
+      bg: '#ffffff',
       piece: {
         type: 'knight',
         color: 'white',
@@ -327,6 +358,7 @@ const INITIAL_BOARD = [
     },
     {
       square: '77',
+      bg: '#cccccc',
       piece: {
         type: 'rook',
         color: 'white',

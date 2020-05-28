@@ -1,9 +1,25 @@
+button {
+  border: none;
+  background: #888888;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  margin: 5px;
+}
+
 .board {
   margin: 50px auto;
   width: 400px;
   height: 400px;
   display: flex;
   flex-direction: column;
+}
+
+.game {
+  margin-top: 20px;
+  border: 1px solid #888888;
 }
 
 .row {
@@ -17,7 +33,6 @@
   height: 100%;
   width: 50px;
   text-align: center;
-  border: 1px solid black;
 }
 
 .piece {
