@@ -9,7 +9,6 @@ const App = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [activePiece, setActivePiece] = useState(null);
   const [board, setBoard] = useState(INITIAL_BOARD);
-  const [previousState, setPreviousState] = useState(null);
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState([
     {
@@ -1115,6 +1114,46 @@ const App = () => {
 
     // king movement
     if (activePiece.piece.type === 'king') {
+      if (rowDiff === 0 && colDiff === 3) {
+        if (activePlayer === 'white' && +row === 7 && +col === 4) {
+          if (board[7][0].piece && board[7][0].piece.type === 'rook') {
+            if (
+              !board[7][1].piece &&
+              !board[7][2].piece &&
+              !board[7][3].piece
+            ) {
+              return true;
+            }
+          }
+        }
+        if (activePlayer === 'black' && +row === 0 && +col === 4) {
+          if (board[0][0].piece && board[0][0].piece.type === 'rook') {
+            if (
+              !board[0][1].piece &&
+              !board[0][2].piece &&
+              !board[0][3].piece
+            ) {
+              return true;
+            }
+          }
+        }
+      }
+      if (rowDiff === 0 && colDiff === -2) {
+        if (activePlayer === 'white' && +row === 7 && +col === 4) {
+          if (board[7][7].piece && board[7][7].piece.type === 'rook') {
+            if (!board[7][6].piece && !board[7][5].piece) {
+              return true;
+            }
+          }
+        }
+        if (activePlayer === 'black' && +row === 0 && +col === 4) {
+          if (board[0][7].piece && board[0][7].piece.type === 'rook') {
+            if (!board[0][6].piece && !board[0][5].piece) {
+              return true;
+            }
+          }
+        }
+      }
       if (colDiff <= 1 && colDiff >= -1 && rowDiff <= 1 && rowDiff >= -1) {
         if (square.piece && square.piece.color === activePlayer) {
           return false;
@@ -1132,13 +1171,6 @@ const App = () => {
         setActivePiece(square);
       }
     } else {
-      const boardCopy = JSON.parse(JSON.stringify(board));
-      setPreviousState({
-        lastBoard: boardCopy,
-        lastActivePlayer: activePlayer,
-        lastIsCheck: isCheck
-      });
-
       const copy = activePiece.piece;
       const copy2 = activePiece;
 
@@ -1158,6 +1190,33 @@ const App = () => {
             activePlayerState = 'white';
           }
 
+          if (
+            activePiece.piece.type === 'king' &&
+            activePiece.piece.color === 'white'
+          ) {
+            if (square.square === '71') {
+              const rook = prevBoard[7][0].piece;
+              prevBoard[7][0].piece = null;
+              prevBoard[7][2].piece = rook;
+            } else if (square.square === '76') {
+              const rook = prevBoard[7][7].piece;
+              prevBoard[7][7].piece = null;
+              prevBoard[7][5].piece = rook;
+            }
+          } else if (
+            activePiece.piece.type === 'king' &&
+            activePiece.piece.color === 'black'
+          ) {
+            if (square.square === '01') {
+              const rook = prevBoard[0][0].piece;
+              prevBoard[0][0].piece = null;
+              prevBoard[0][2].piece = rook;
+            } else if (square.square === '06') {
+              const rook = prevBoard[0][7].piece;
+              prevBoard[0][7].piece = null;
+              prevBoard[0][5].piece = rook;
+            }
+          }
           setBoard(prevBoard);
           setHistory([
             ...history.slice(0, index + 1),
@@ -1209,7 +1268,6 @@ const App = () => {
           }
         }
       }
-
       setActivePiece(null);
     }
   };
@@ -1244,8 +1302,6 @@ const App = () => {
     } else {
       setIsCheck(false);
     }
-
-    console.log(checkIsCheck(board));
   }, [board, checkIsCheck]);
 
   return (
@@ -1254,8 +1310,10 @@ const App = () => {
         {activePlayer}
         {isCheck && ', check'}
       </h1>
-      <button onClick={handlePrevious}>Previous</button>
-      <button onClick={handleNext}>Next</button>
+      <div className='buttons'>
+        <button onClick={handlePrevious}>Previous</button>
+        <button onClick={handleNext}>Next</button>
+      </div>
       <div className='game'>
         {board.map(row => (
           <div className='row'>
@@ -1266,7 +1324,7 @@ const App = () => {
                 onClick={() => handleClick(square)}
               >
                 {square.piece && (
-                  <img className='piece' src={square.piece.svg} />
+                  <img alt='piece' className='piece' src={square.piece.svg} />
                 )}
               </div>
             ))}
