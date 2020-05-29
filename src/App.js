@@ -24,9 +24,9 @@ const App = () => {
     }
   ]);
 
-  const simulateBoard = (square, activePiece, board) => {
+  const simulateBoard = (target, activePiece, board) => {
     let data = JSON.parse(JSON.stringify(board));
-    const [row, col] = square.square;
+    const [row, col] = target.square;
     const [prevRow, prevCol] = activePiece.square;
     data[prevRow][prevCol].piece = null;
     data[row][col].piece = activePiece.piece;
@@ -50,8 +50,8 @@ const App = () => {
     [activePlayer]
   );
 
-  const willStopCheck = (square, activePiece, board) => {
-    const data = simulateBoard(square, activePiece, board);
+  const willStopCheck = (target, activePiece, board) => {
+    const data = simulateBoard(target, activePiece, board);
 
     if (checkIsCheck(data)) {
       return false;
@@ -60,8 +60,8 @@ const App = () => {
     return true;
   };
 
-  const willCheck = (square, activePiece, board) => {
-    const data = simulateBoard(square, activePiece, board);
+  const willCheck = (target, activePiece, board) => {
+    const data = simulateBoard(target, activePiece, board);
 
     if (checkIsCheck(data)) {
       return true;
@@ -119,22 +119,24 @@ const App = () => {
     }
   };
 
-  const handleClick = square => {
+  const confirmUpdate = (target, activePiece, board) => {
+    const prevBoard = simulateBoard(target, activePiece, board);
+    castleKings(activePiece, target, prevBoard);
+    handleUpdate(prevBoard);
+  };
+
+  const handleClick = target => {
     if (!activePiece) {
-      if (square.piece && square.piece.color === activePlayer) {
-        setActivePiece(square);
+      if (target.piece && target.piece.color === activePlayer) {
+        setActivePiece(target);
       }
     } else {
-      if (checkLegal(square, activePiece, board, activePlayer)) {
-        if (!willCheck(square, activePiece, board) && !checkIsCheck(board)) {
-          const prevBoard = simulateBoard(square, activePiece, board);
-          castleKings(activePiece, square, prevBoard);
-          handleUpdate(prevBoard);
+      if (checkLegal(target, activePiece, board, activePlayer)) {
+        if (!willCheck(target, activePiece, board) && !checkIsCheck(board)) {
+          confirmUpdate(target, activePiece, board);
         } else {
-          if (willStopCheck(square, activePiece, board)) {
-            const prevBoard = simulateBoard(square, activePiece, board);
-            castleKings(activePiece, square, prevBoard);
-            handleUpdate(prevBoard);
+          if (willStopCheck(target, activePiece, board)) {
+            confirmUpdate(target, activePiece, board);
           }
         }
       }
