@@ -1,15 +1,5 @@
-import findKings from './findKings';
-
-const checkPawns = (activePlayer, data) => {
-  const { whiteKing, blackKing } = findKings(data);
-  let row, col;
-
-  if (activePlayer === 'white') {
-    [row, col] = whiteKing.square;
-  } else {
-    [row, col] = blackKing.square;
-  }
-
+const checkPawns = (activePlayer, data, location) => {
+  let [row, col] = location.square;
   row = +row;
   col = +col;
 

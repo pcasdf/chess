@@ -1,17 +1,12 @@
-import findKings from './findKings';
-
-const checkLines = (activePlayer, data) => {
-  const { whiteKing, blackKing } = findKings(data);
-  let row, col, opponent;
-
+const checkLines = (activePlayer, data, location) => {
+  let opponent;
   if (activePlayer === 'white') {
-    [row, col] = whiteKing.square;
     opponent = 'black';
   } else {
-    [row, col] = blackKing.square;
     opponent = 'white';
   }
 
+  let [row, col] = location.square;
   row = +row;
   col = +col;
 

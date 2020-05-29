@@ -53,9 +53,9 @@ const App = () => {
 
       if (
         checkDiagonals(activePlayer, data, location) ||
-        checkLines(activePlayer, data) ||
-        checkKnights(activePlayer, data) ||
-        checkPawns(activePlayer, data)
+        checkLines(activePlayer, data, location) ||
+        checkKnights(activePlayer, data, location) ||
+        checkPawns(activePlayer, data, location)
       ) {
         return true;
       }
@@ -211,6 +211,7 @@ const App = () => {
           if (checkAboveRight(activePlayer, data, location)) {
             // find a way to block the threat
             // can the path be blocked
+            // find the threat
             for (let i = 1; row - i >= 0; i++) {
               if (col + i <= 7) {
                 let diagonal = data[row - i][col + i];
@@ -219,13 +220,12 @@ const App = () => {
                 }
               }
             }
-
             let [endRow, endCol] = threat.square;
             endRow = +endRow;
             endCol = +endCol;
             for (let i = 1; i < row - endRow; i++) {
               // are there pieces that can move here
-
+              let location = data[row - i][col + i];
               // check for pawns
               if (activePlayer === 'white') {
                 let pawn = data[row - i + 1][col + i];
@@ -237,13 +237,18 @@ const App = () => {
                   console.log('found a pawn');
                 }
               }
-
               // check for bishops
-              // refactor check for diagonals first
-
+              if (checkDiagonals('black', data, location)) {
+                console.log('found a bishop or queen');
+              }
               // check for knights
+              if (checkKnights('black', data, location)) {
+                console.log('found a knight');
+              }
               // check for rooks
-              // check for queen
+              if (checkLines('black', data, location)) {
+                console.log('found a rook or queen');
+              }
             }
           }
           if (checkAboveLeft(activePlayer, data, location)) {
