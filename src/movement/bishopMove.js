@@ -1,6 +1,6 @@
-const bishopMove = (square, activePiece, board, activePlayer) => {
+const bishopMove = (target, activePiece, board, activePlayer) => {
   let [row, col] = activePiece.square;
-  let [nextRow, nextCol] = square.square;
+  let [nextRow, nextCol] = target.square;
   let rowDiff = row - nextRow;
   let colDiff = col - nextCol;
 
@@ -11,7 +11,7 @@ const bishopMove = (square, activePiece, board, activePlayer) => {
           return false;
         }
       }
-      if (square.piece && activePlayer === square.piece.color) {
+      if (target.piece && activePlayer === target.piece.color) {
         return false;
       }
       return true;
@@ -21,7 +21,7 @@ const bishopMove = (square, activePiece, board, activePlayer) => {
           return false;
         }
       }
-      if (square.piece && activePlayer === square.piece.color) {
+      if (target.piece && activePlayer === target.piece.color) {
         return false;
       }
       return true;
@@ -31,7 +31,7 @@ const bishopMove = (square, activePiece, board, activePlayer) => {
           return false;
         }
       }
-      if (square.piece && activePlayer === square.piece.color) {
+      if (target.piece && activePlayer === target.piece.color) {
         return false;
       }
       return true;
@@ -41,7 +41,7 @@ const bishopMove = (square, activePiece, board, activePlayer) => {
           return false;
         }
       }
-      if (square.piece && activePlayer === square.piece.color) {
+      if (target.piece && activePlayer === target.piece.color) {
         return false;
       }
       return true;

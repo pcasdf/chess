@@ -1,18 +1,18 @@
-const pawnMove = (square, activePiece, activePlayer) => {
+const pawnMove = (target, activePiece, activePlayer) => {
   let [row, col] = activePiece.square;
-  let [nextRow, nextCol] = square.square;
+  let [nextRow, nextCol] = target.square;
   let rowDiff = row - nextRow;
   let colDiff = col - nextCol;
 
   if (activePlayer === 'white') {
     if (rowDiff === 1 || (rowDiff === 2 && row === '6')) {
       if (colDiff === 1 || colDiff === -1) {
-        if (square.piece && square.piece.color === 'black') {
+        if (target.piece && target.piece.color === 'black') {
           return true;
         }
         return false;
       } else {
-        if (!square.piece && colDiff === 0) {
+        if (!target.piece && colDiff === 0) {
           return true;
         }
         return false;
@@ -22,11 +22,11 @@ const pawnMove = (square, activePiece, activePlayer) => {
   } else {
     if (rowDiff === -1 || (rowDiff === -2 && row === '1')) {
       if (colDiff === 1 || colDiff === -1) {
-        if (square.piece && square.piece.color === 'white') {
+        if (target.piece && target.piece.color === 'white') {
           return true;
         }
       } else {
-        if (!square.piece && colDiff === 0) {
+        if (!target.piece && colDiff === 0) {
           return true;
         }
         return false;

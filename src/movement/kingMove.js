@@ -1,6 +1,6 @@
-const kingMove = (square, activePiece, board, activePlayer) => {
+const kingMove = (target, activePiece, board, activePlayer) => {
   let [row, col] = activePiece.square;
-  let [nextRow, nextCol] = square.square;
+  let [nextRow, nextCol] = target.square;
   let rowDiff = row - nextRow;
   let colDiff = col - nextCol;
 
@@ -37,7 +37,7 @@ const kingMove = (square, activePiece, board, activePlayer) => {
     }
   }
   if (colDiff <= 1 && colDiff >= -1 && rowDiff <= 1 && rowDiff >= -1) {
-    if (square.piece && square.piece.color === activePlayer) {
+    if (target.piece && target.piece.color === activePlayer) {
       return false;
     }
     return true;

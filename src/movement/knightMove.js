@@ -1,6 +1,6 @@
-const knightMove = (square, activePiece, activePlayer) => {
+const knightMove = (target, activePiece, activePlayer) => {
   let [row, col] = activePiece.square;
-  let [nextRow, nextCol] = square.square;
+  let [nextRow, nextCol] = target.square;
   let rowDiff = row - nextRow;
   let colDiff = col - nextCol;
 
@@ -10,7 +10,7 @@ const knightMove = (square, activePiece, activePlayer) => {
         (colDiff === 1 || colDiff === -1)) ||
       ((rowDiff === 1 || rowDiff === -1) && (colDiff === 2 || colDiff === -2))
     ) {
-      if (square.piece && square.piece.color === activePlayer) {
+      if (target.piece && target.piece.color === activePlayer) {
         return false;
       }
       return true;
