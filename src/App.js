@@ -24,6 +24,16 @@ const App = () => {
     }
   ]);
 
+  const simulateBoard = (square, activePiece, board) => {
+    let data = JSON.parse(JSON.stringify(board));
+    const [row, col] = square.square;
+    const [prevRow, prevCol] = activePiece.square;
+    data[prevRow][prevCol].piece = null;
+    data[row][col].piece = activePiece.piece;
+
+    return data;
+  };
+
   const checkIsCheck = useCallback(
     data => {
       if (
@@ -40,13 +50,8 @@ const App = () => {
     [activePlayer]
   );
 
-  const willStopCheck = (square, copy, copy2) => {
-    let data = JSON.parse(JSON.stringify(board));
-
-    const [row, col] = square.square;
-    const [prevRow, prevCol] = copy2.square;
-    data[prevRow][prevCol].piece = null;
-    data[row][col].piece = copy;
+  const willStopCheck = (square, activePiece, board) => {
+    const data = simulateBoard(square, activePiece, board);
 
     if (checkIsCheck(data)) {
       return false;
@@ -55,16 +60,10 @@ const App = () => {
     return true;
   };
 
-  const willCheck = square => {
-    const copy = activePiece.piece;
+  const willCheck = (square, activePiece, board) => {
+    const data = simulateBoard(square, activePiece, board);
 
-    let prevBoard = JSON.parse(JSON.stringify(board));
-    const [row, col] = square.square;
-    const [prevRow, prevCol] = activePiece.square;
-    prevBoard[prevRow][prevCol].piece = null;
-    prevBoard[row][col].piece = copy;
-
-    if (checkIsCheck(prevBoard)) {
+    if (checkIsCheck(data)) {
       return true;
     }
     return false;
@@ -94,16 +93,6 @@ const App = () => {
       }
     ]);
     setIndex(index => index + 1);
-  };
-
-  const handleMove = (square, copy) => {
-    let prevBoard = JSON.parse(JSON.stringify(board));
-    const [row, col] = square.square;
-    const [prevRow, prevCol] = activePiece.square;
-    prevBoard[prevRow][prevCol].piece = null;
-    prevBoard[row][col].piece = copy;
-
-    return prevBoard;
   };
 
   const handlePrevious = () => {
@@ -136,17 +125,14 @@ const App = () => {
         setActivePiece(square);
       }
     } else {
-      const copy = activePiece.piece;
-      const copy2 = activePiece;
-
       if (checkLegal(square, activePiece, board, activePlayer)) {
-        if (!willCheck(square) && !checkIsCheck(board)) {
-          const prevBoard = handleMove(square, copy);
+        if (!willCheck(square, activePiece, board) && !checkIsCheck(board)) {
+          const prevBoard = simulateBoard(square, activePiece, board);
           castleKings(activePiece, square, prevBoard);
           handleUpdate(prevBoard);
         } else {
-          if (willStopCheck(square, copy, copy2)) {
-            const prevBoard = handleMove(square, copy);
+          if (willStopCheck(square, activePiece, board)) {
+            const prevBoard = simulateBoard(square, activePiece, board);
             castleKings(activePiece, square, prevBoard);
             handleUpdate(prevBoard);
           }
