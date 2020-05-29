@@ -20,31 +20,23 @@ const checkDiagonals = (activePlayer, data) => {
       if (col + i <= 7) {
         let diagonal = data[row - i][col + i];
         if (diagonal.piece) {
-          if (
-            diagonal.piece.color === activePlayer &&
-            diagonal.piece.type !== 'king'
-          ) {
+          let target = diagonal.piece;
+          if (target.color === activePlayer && target.type !== 'king') {
             return false;
           }
-          if (diagonal.piece.color === opponent) {
+          if (target.color === opponent) {
             if (
-              diagonal.piece.type === 'pawn' ||
-              diagonal.piece.type === 'rook' ||
-              diagonal.piece.type === 'knight'
+              target.type === 'pawn' ||
+              target.type === 'rook' ||
+              target.type === 'knight'
             ) {
               return false;
             }
-            if (
-              diagonal.piece.type === 'queen' ||
-              diagonal.piece.type === 'bishop'
-            ) {
+            if (target.type === 'queen' || target.type === 'bishop') {
               return true;
             }
           }
-          if (
-            diagonal.piece.type === 'king' &&
-            diagonal.piece.color === activePlayer
-          ) {
+          if (target.type === 'king' && target.color === activePlayer) {
             return true;
           }
         }
@@ -57,31 +49,23 @@ const checkDiagonals = (activePlayer, data) => {
       if (col - i >= 0) {
         let diagonal = data[row + i][col - i];
         if (diagonal.piece) {
-          if (
-            diagonal.piece.color === activePlayer &&
-            diagonal.piece.type !== 'king'
-          ) {
+          let target = diagonal.piece;
+          if (target.color === activePlayer && target.type !== 'king') {
             return false;
           }
-          if (diagonal.piece.color === opponent) {
+          if (target.color === opponent) {
             if (
-              diagonal.piece.type === 'pawn' ||
-              diagonal.piece.type === 'rook' ||
-              diagonal.piece.type === 'knight'
+              target.type === 'pawn' ||
+              target.type === 'rook' ||
+              target.type === 'knight'
             ) {
               return false;
             }
-            if (
-              diagonal.piece.type === 'queen' ||
-              diagonal.piece.type === 'bishop'
-            ) {
+            if (target.type === 'queen' || target.type === 'bishop') {
               return true;
             }
           }
-          if (
-            diagonal.piece.type === 'king' &&
-            diagonal.piece.color === activePlayer
-          ) {
+          if (target.type === 'king' && target.color === activePlayer) {
             return true;
           }
         }
@@ -94,31 +78,23 @@ const checkDiagonals = (activePlayer, data) => {
       if (col + i <= 7) {
         let diagonal = data[row + i][col + i];
         if (diagonal.piece) {
-          if (
-            diagonal.piece.color === activePlayer &&
-            diagonal.piece.type !== 'king'
-          ) {
+          let target = diagonal.piece;
+          if (target.color === activePlayer && target.type !== 'king') {
             return false;
           }
-          if (diagonal.piece.color === opponent) {
+          if (target.color === opponent) {
             if (
-              diagonal.piece.type === 'pawn' ||
-              diagonal.piece.type === 'rook' ||
-              diagonal.piece.type === 'knight'
+              target.type === 'pawn' ||
+              target.type === 'rook' ||
+              target.type === 'knight'
             ) {
               return false;
             }
-            if (
-              diagonal.piece.type === 'queen' ||
-              diagonal.piece.type === 'bishop'
-            ) {
+            if (target.type === 'queen' || target.type === 'bishop') {
               return true;
             }
           }
-          if (
-            diagonal.piece.type === 'king' &&
-            diagonal.piece.color === activePlayer
-          ) {
+          if (target.type === 'king' && target.color === activePlayer) {
             return true;
           }
         }
@@ -131,31 +107,23 @@ const checkDiagonals = (activePlayer, data) => {
       if (col - i >= 0) {
         let diagonal = data[row - i][col - i];
         if (diagonal.piece) {
-          if (
-            diagonal.piece.color === activePlayer &&
-            diagonal.piece.type !== 'king'
-          ) {
+          let target = diagonal.piece;
+          if (target.color === activePlayer && target.type !== 'king') {
             return false;
           }
-          if (diagonal.piece.color === opponent) {
+          if (target.color === opponent) {
             if (
-              diagonal.piece.type === 'pawn' ||
-              diagonal.piece.type === 'rook' ||
-              diagonal.piece.type === 'knight'
+              target.type === 'pawn' ||
+              target.type === 'rook' ||
+              target.type === 'knight'
             ) {
               return false;
             }
-            if (
-              diagonal.piece.type === 'queen' ||
-              diagonal.piece.type === 'bishop'
-            ) {
+            if (target.type === 'queen' || target.type === 'bishop') {
               return true;
             }
           }
-          if (
-            diagonal.piece.type === 'king' &&
-            diagonal.piece.color === activePlayer
-          ) {
+          if (target.type === 'king' && target.color === activePlayer) {
             return true;
           }
         }
