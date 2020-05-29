@@ -6,18 +6,8 @@ import INITIAL_BOARD from './board';
 import castleKings from './utilities/castleKings';
 import checkPawns from './utilities/checkPawns';
 import checkKnights from './utilities/checkKnights';
-import checkDiagonals, {
-  checkAboveRight,
-  checkAboveLeft,
-  checkBelowRight,
-  checkBelowLeft
-} from './utilities/checkDiagonals';
-import checkLines, {
-  checkAbove,
-  checkBelow,
-  checkRight,
-  checkLeft
-} from './utilities/checkLines';
+import checkDiagonals from './utilities/checkDiagonals';
+import checkLines from './utilities/checkLines';
 import checkLegal from './movement/checkLegal';
 import findKings from './utilities/findKings';
 
@@ -186,6 +176,31 @@ const App = () => {
     [activePlayer]
   );
 
+  const findThreats = (activePlayer, data, location) => {
+    let opponent;
+    let [row, col] = location.square;
+    row = +row;
+    col = +col;
+
+    if (activePlayer === 'white') {
+      opponent = 'black';
+    } else {
+      opponent = 'white';
+    }
+
+    let threats = [];
+    for (let i = 1; row - i >= 0; i++) {
+      if (col + i <= 7) {
+        let diagonal = data[row - i][col + i];
+        if (diagonal && diagonal.piece && diagonal.piece.color === opponent) {
+          threats.push(diagonal);
+        }
+      }
+    }
+
+    return threats;
+  };
+
   const blockAboveRight = useCallback(
     data => {
       let { row, col, opponent } = setLocations(data);
@@ -353,7 +368,7 @@ const App = () => {
 
   const findBlockers = useCallback(
     data => {
-      if (blockBelowRight(data)) {
+      if (blockAboveRight(data)) {
         return true;
       }
       return false;
@@ -389,45 +404,33 @@ const App = () => {
         willStopCheck(square, whiteKing, board)
       );
 
-      let location;
+      let location, opponent;
       if (activePlayer === 'white') {
         location = whiteKing;
+        opponent = 'black';
       } else {
         location = blackKing;
+        opponent = 'white';
       }
 
+      let threats = findThreats(activePlayer, data, location);
       if (possibleMoves.find(item => item)) {
         return false;
-      } else {
-        if (checkDiagonals(activePlayer, data, location)) {
-          if (checkAboveRight(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkAboveLeft(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkBelowRight(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkBelowLeft(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
+      } else if (threats.length > 1) {
+        return true;
+      } else if (threats.length > 0) {
+        if (
+          checkDiagonals(opponent, data, threats[0]) ||
+          checkKnights(opponent, data, threats[0]) ||
+          checkLines(opponent, data, threats[0])
+        ) {
+          return false;
         }
-        if (checkLines(activePlayer, data, location)) {
-          if (checkAbove(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkBelow(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkRight(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-          if (checkLeft(activePlayer, data, location)) {
-            return findBlockers(data, location);
-          }
-        }
-        if (checkKnights(activePlayer, data, location)) {
+        if (
+          checkDiagonals(activePlayer, data, location) ||
+          checkKnights(activePlayer, data, location) ||
+          checkLines(activePlayer, data, location)
+        ) {
           return findBlockers(data, location);
         }
       }
