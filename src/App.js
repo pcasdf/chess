@@ -368,12 +368,12 @@ const App = () => {
 
   const findBlockers = useCallback(
     data => {
-      if (blockAboveRight(data)) {
+      if (blockAboveRight(data) || blockAboveLeft(data)) {
         return true;
       }
       return false;
     },
-    [blockAboveRight, blockAboveLeft, blockBelowRight]
+    [blockAboveRight, blockAboveLeft]
   );
 
   const checkMate = useCallback(
