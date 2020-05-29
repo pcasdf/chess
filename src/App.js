@@ -12,7 +12,12 @@ import checkDiagonals, {
   checkBelowRight,
   checkBelowLeft
 } from './utilities/checkDiagonals';
-import checkLines from './utilities/checkLines';
+import checkLines, {
+  checkAbove,
+  checkBelow,
+  checkRight,
+  checkLeft
+} from './utilities/checkLines';
 import checkLegal from './movement/checkLegal';
 import findKings from './utilities/findKings';
 
@@ -162,6 +167,200 @@ const App = () => {
     }
   };
 
+  const setLocations = useCallback(
+    data => {
+      const { whiteKing, blackKing } = findKings(data);
+      let row, col, opponent;
+      if (activePlayer === 'white') {
+        [row, col] = whiteKing.square;
+        opponent = 'black';
+      } else {
+        [row, col] = blackKing.square;
+        opponent = 'white';
+      }
+      row = +row;
+      col = +col;
+
+      return { row, col, opponent };
+    },
+    [activePlayer]
+  );
+
+  const blockAboveRight = useCallback(
+    data => {
+      let { row, col, opponent } = setLocations(data);
+
+      let threat;
+      for (let i = 1; row - i >= 0; i++) {
+        if (col + i <= 7) {
+          let diagonal = data[row - i][col + i];
+          if (diagonal.piece) {
+            threat = diagonal;
+          }
+        }
+      }
+      let endRow;
+      if (threat) {
+        [endRow] = threat.square;
+        endRow = +endRow;
+      }
+
+      for (let i = 1; i < row - endRow; i++) {
+        let location = data[row - i][col + i];
+        if (activePlayer === 'white') {
+          let pawn = data[row - i + 1][col + i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'white'
+          ) {
+            return false;
+          }
+        } else {
+          let pawn = data[row - i - 1][col + i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'black'
+          ) {
+            return false;
+          }
+        }
+        if (checkDiagonals(opponent, data, location)) {
+          return false;
+        }
+        if (checkKnights(opponent, data, location)) {
+          return false;
+        }
+        if (checkLines(opponent, data, location)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    [activePlayer, setLocations]
+  );
+
+  const blockAboveLeft = useCallback(
+    data => {
+      let { row, col, opponent } = setLocations(data);
+
+      let threat;
+      for (let i = 1; row - i >= 0; i++) {
+        if (col - i >= 0) {
+          let diagonal = data[row - i][col - i];
+          if (diagonal.piece) {
+            threat = diagonal;
+          }
+        }
+      }
+      let endRow;
+      if (threat) {
+        [endRow] = threat.square;
+        endRow = +endRow;
+      }
+
+      for (let i = 1; i < row - endRow; i++) {
+        let location = data[row - i][col - i];
+        if (activePlayer === 'white') {
+          let pawn = data[row - i + 1][col - i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'white'
+          ) {
+            return false;
+          }
+        } else {
+          let pawn = data[row - i - 1][col - i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'black'
+          ) {
+            return false;
+          }
+        }
+        if (checkDiagonals(opponent, data, location)) {
+          return false;
+        }
+        if (checkKnights(opponent, data, location)) {
+          return false;
+        }
+        if (checkLines(opponent, data, location)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    [activePlayer, setLocations]
+  );
+
+  const blockBelowRight = useCallback(
+    data => {
+      let { row, col, opponent } = setLocations(data);
+
+      let threat;
+      for (let i = 1; row + i <= 7; i++) {
+        if (col + i <= 7) {
+          let diagonal = data[row + i][col + i];
+          if (diagonal.piece) {
+            threat = diagonal;
+          }
+        }
+      }
+      let endRow;
+      if (threat) {
+        [endRow] = threat.square;
+        endRow = +endRow;
+      }
+
+      for (let i = 1; i < endRow - row; i++) {
+        let location = data[row + i][col + i];
+        if (activePlayer === 'white') {
+          let pawn = data[row + i + 1][col + i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'white'
+          ) {
+            return false;
+          }
+        } else {
+          let pawn = data[row + i - 1][col + i];
+          if (
+            pawn.piece &&
+            pawn.piece.type === 'pawn' &&
+            pawn.piece.color === 'black'
+          ) {
+            return false;
+          }
+        }
+        if (checkDiagonals(opponent, data, location)) {
+          return false;
+        }
+        if (checkKnights(opponent, data, location)) {
+          return false;
+        }
+        if (checkLines(opponent, data, location)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    [activePlayer, setLocations]
+  );
+
+  const findBlockers = useCallback(
+    data => {
+      if (blockBelowRight(data)) {
+        return true;
+      }
+      return false;
+    },
+    [blockAboveRight, blockAboveLeft, blockBelowRight]
+  );
+
   const checkMate = useCallback(
     (activePlayer, data) => {
       const { whiteKing, blackKing } = findKings(data);
@@ -170,7 +369,6 @@ const App = () => {
       col = +col;
 
       let possibleMoves = [];
-
       if (data[row - 1]) {
         possibleMoves.push(
           data[row - 1][col - 1],
@@ -178,7 +376,6 @@ const App = () => {
           data[row - 1][col + 1]
         );
       }
-
       if (data[row + 1]) {
         possibleMoves.push(
           data[row + 1][col + 1],
@@ -186,15 +383,11 @@ const App = () => {
           data[row + 1][col - 1]
         );
       }
-
       possibleMoves.push(data[row][col + 1], data[row][col - 1]);
-
       possibleMoves = possibleMoves.filter(square => square && !square.piece);
       possibleMoves = possibleMoves.map(square =>
         willStopCheck(square, whiteKing, board)
       );
-
-      // can the king move anywhere
 
       let location;
       if (activePlayer === 'white') {
@@ -204,68 +397,43 @@ const App = () => {
       }
 
       if (possibleMoves.find(item => item)) {
-        return true;
+        return false;
       } else {
         if (checkDiagonals(activePlayer, data, location)) {
-          let threat;
           if (checkAboveRight(activePlayer, data, location)) {
-            // find a way to block the threat
-            // can the path be blocked
-            // find the threat
-            for (let i = 1; row - i >= 0; i++) {
-              if (col + i <= 7) {
-                let diagonal = data[row - i][col + i];
-                if (diagonal.piece) {
-                  threat = diagonal;
-                }
-              }
-            }
-            let [endRow, endCol] = threat.square;
-            endRow = +endRow;
-            endCol = +endCol;
-            for (let i = 1; i < row - endRow; i++) {
-              // are there pieces that can move here
-              let location = data[row - i][col + i];
-              // check for pawns
-              if (activePlayer === 'white') {
-                let pawn = data[row - i + 1][col + i];
-                if (
-                  pawn.piece &&
-                  pawn.piece.type === 'pawn' &&
-                  pawn.piece.color === 'white'
-                ) {
-                  console.log('found a pawn');
-                }
-              }
-              // check for bishops
-              if (checkDiagonals('black', data, location)) {
-                console.log('found a bishop or queen');
-              }
-              // check for knights
-              if (checkKnights('black', data, location)) {
-                console.log('found a knight');
-              }
-              // check for rooks
-              if (checkLines('black', data, location)) {
-                console.log('found a rook or queen');
-              }
-            }
+            return findBlockers(data, location);
           }
           if (checkAboveLeft(activePlayer, data, location)) {
-            console.log('checkAboveLeft');
+            return findBlockers(data, location);
           }
           if (checkBelowRight(activePlayer, data, location)) {
-            console.log('checkBelowRight');
+            return findBlockers(data, location);
           }
           if (checkBelowLeft(activePlayer, data, location)) {
-            console.log('checkBelowLeft');
+            return findBlockers(data, location);
           }
         }
+        if (checkLines(activePlayer, data, location)) {
+          if (checkAbove(activePlayer, data, location)) {
+            return findBlockers(data, location);
+          }
+          if (checkBelow(activePlayer, data, location)) {
+            return findBlockers(data, location);
+          }
+          if (checkRight(activePlayer, data, location)) {
+            return findBlockers(data, location);
+          }
+          if (checkLeft(activePlayer, data, location)) {
+            return findBlockers(data, location);
+          }
+        }
+        if (checkKnights(activePlayer, data, location)) {
+          return findBlockers(data, location);
+        }
       }
-
       return false;
     },
-    [board, willStopCheck]
+    [board, willStopCheck, findBlockers]
   );
 
   useEffect(() => {
@@ -274,7 +442,9 @@ const App = () => {
     } else {
       setIsCheck(false);
     }
-    checkMate(activePlayer, board);
+    if (checkMate(activePlayer, board)) {
+      console.log('checkmate');
+    }
   }, [board, checkIsCheck, activePlayer, checkMate]);
 
   return (
@@ -289,9 +459,10 @@ const App = () => {
       </div>
       <div className='game'>
         {board.map(row => (
-          <div className='row'>
+          <div key={row[0].square} className='row'>
             {row.map(square => (
               <div
+                key={square.square}
                 style={{ background: `${square.bg}` }}
                 className='square'
                 onClick={() => handleClick(square)}
