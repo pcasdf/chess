@@ -6,9 +6,15 @@ import INITIAL_BOARD from './board';
 import castleKings from './utilities/castleKings';
 import checkPawns from './utilities/checkPawns';
 import checkKnights from './utilities/checkKnights';
-import checkDiagonals from './utilities/checkDiagonals';
+import checkDiagonals, {
+  checkAboveRight,
+  checkAboveLeft,
+  checkBelowRight,
+  checkBelowLeft
+} from './utilities/checkDiagonals';
 import checkLines from './utilities/checkLines';
 import checkLegal from './movement/checkLegal';
+import findKings from './utilities/findKings';
 
 const App = () => {
   const [activePlayer, setActivePlayer] = useState('white');
@@ -36,8 +42,17 @@ const App = () => {
 
   const checkIsCheck = useCallback(
     data => {
+      const { whiteKing, blackKing } = findKings(data);
+      let location;
+
+      if (activePlayer === 'white') {
+        location = whiteKing;
+      } else {
+        location = blackKing;
+      }
+
       if (
-        checkDiagonals(activePlayer, data) ||
+        checkDiagonals(activePlayer, data, location) ||
         checkLines(activePlayer, data) ||
         checkKnights(activePlayer, data) ||
         checkPawns(activePlayer, data)
@@ -50,15 +65,18 @@ const App = () => {
     [activePlayer]
   );
 
-  const willStopCheck = (target, activePiece, board) => {
-    const data = simulateBoard(target, activePiece, board);
+  const willStopCheck = useCallback(
+    (target, activePiece, board) => {
+      const data = simulateBoard(target, activePiece, board);
 
-    if (checkIsCheck(data)) {
-      return false;
-    }
+      if (checkIsCheck(data)) {
+        return false;
+      }
 
-    return true;
-  };
+      return true;
+    },
+    [checkIsCheck]
+  );
 
   const willCheck = (target, activePiece, board) => {
     const data = simulateBoard(target, activePiece, board);
@@ -144,13 +162,115 @@ const App = () => {
     }
   };
 
+  const checkMate = useCallback(
+    (activePlayer, data) => {
+      const { whiteKing, blackKing } = findKings(data);
+      let [row, col] = whiteKing.square;
+      row = +row;
+      col = +col;
+
+      let possibleMoves = [];
+
+      if (data[row - 1]) {
+        possibleMoves.push(
+          data[row - 1][col - 1],
+          data[row - 1][col],
+          data[row - 1][col + 1]
+        );
+      }
+
+      if (data[row + 1]) {
+        possibleMoves.push(
+          data[row + 1][col + 1],
+          data[row + 1][col],
+          data[row + 1][col - 1]
+        );
+      }
+
+      possibleMoves.push(data[row][col + 1], data[row][col - 1]);
+
+      possibleMoves = possibleMoves.filter(square => square && !square.piece);
+      possibleMoves = possibleMoves.map(square =>
+        willStopCheck(square, whiteKing, board)
+      );
+
+      // can the king move anywhere
+
+      let location;
+      if (activePlayer === 'white') {
+        location = whiteKing;
+      } else {
+        location = blackKing;
+      }
+
+      if (possibleMoves.find(item => item)) {
+        return true;
+      } else {
+        if (checkDiagonals(activePlayer, data, location)) {
+          let threat;
+          if (checkAboveRight(activePlayer, data, location)) {
+            // find a way to block the threat
+            // can the path be blocked
+            for (let i = 1; row - i >= 0; i++) {
+              if (col + i <= 7) {
+                let diagonal = data[row - i][col + i];
+                if (diagonal.piece) {
+                  threat = diagonal;
+                }
+              }
+            }
+
+            let [endRow, endCol] = threat.square;
+            endRow = +endRow;
+            endCol = +endCol;
+            for (let i = 1; i < row - endRow; i++) {
+              // are there pieces that can move here
+
+              // check for pawns
+              if (activePlayer === 'white') {
+                let pawn = data[row - i + 1][col + i];
+                if (
+                  pawn.piece &&
+                  pawn.piece.type === 'pawn' &&
+                  pawn.piece.color === 'white'
+                ) {
+                  console.log('found a pawn');
+                }
+              }
+
+              // check for bishops
+              // refactor check for diagonals first
+
+              // check for knights
+              // check for rooks
+              // check for queen
+            }
+          }
+          if (checkAboveLeft(activePlayer, data, location)) {
+            console.log('checkAboveLeft');
+          }
+          if (checkBelowRight(activePlayer, data, location)) {
+            console.log('checkBelowRight');
+          }
+          if (checkBelowLeft(activePlayer, data, location)) {
+            console.log('checkBelowLeft');
+          }
+        }
+      }
+
+      return false;
+    },
+    [board, willStopCheck]
+  );
+
   useEffect(() => {
     if (checkIsCheck(board)) {
       setIsCheck(true);
     } else {
       setIsCheck(false);
     }
-  }, [board, checkIsCheck]);
+    checkMate(activePlayer, board);
+  }, [board, checkIsCheck, activePlayer, checkMate]);
 
   return (
     <div className='board'>
