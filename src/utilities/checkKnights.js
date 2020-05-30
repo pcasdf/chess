@@ -6,7 +6,10 @@ const checkKnights = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+  }
   row = +row;
   col = +col;
 

@@ -6,10 +6,12 @@ export const checkRight = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+  }
   row = +row;
   col = +col;
-
   for (let i = 1; col + i <= 7; i++) {
     let right = data[row][col + i];
     if (right.piece) {
@@ -44,10 +46,12 @@ export const checkLeft = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+  }
   row = +row;
   col = +col;
-
   for (let i = 1; col - i >= 0; i++) {
     let left = data[row][col - i];
     if (left.piece) {
@@ -82,10 +86,12 @@ export const checkAbove = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+  }
   row = +row;
   col = +col;
-
   for (let i = 1; row - i >= 0; i++) {
     let above = data[row - i][col];
     if (above.piece) {
@@ -120,10 +126,12 @@ export const checkBelow = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+  }
   row = +row;
   col = +col;
-
   for (let i = 1; row + i <= 7; i++) {
     let below = data[row + i][col];
     if (below.piece) {

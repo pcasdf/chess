@@ -6,9 +6,12 @@ export const checkAboveRight = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
-  row = +row;
-  col = +col;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+    row = +row;
+    col = +col;
+  }
 
   for (let i = 1; row - i >= 0; i++) {
     if (col + i <= 7) {
@@ -46,9 +49,12 @@ export const checkBelowLeft = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
-  row = +row;
-  col = +col;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+    row = +row;
+    col = +col;
+  }
 
   for (let i = 1; row + i <= 7; i++) {
     if (col - i >= 0) {
@@ -86,9 +92,12 @@ export const checkBelowRight = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
-  row = +row;
-  col = +col;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+    row = +row;
+    col = +col;
+  }
 
   for (let i = 1; row + i <= 7; i++) {
     if (col + i <= 7) {
@@ -126,9 +135,12 @@ export const checkAboveLeft = (activePlayer, data, location) => {
     opponent = 'white';
   }
 
-  let [row, col] = location.square;
-  row = +row;
-  col = +col;
+  let row, col;
+  if (location) {
+    [row, col] = location.square;
+    row = +row;
+    col = +col;
+  }
 
   for (let i = 1; row - i >= 0; i++) {
     if (col - i >= 0) {

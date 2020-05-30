@@ -241,123 +241,11 @@ const App = () => {
             return false;
           }
         }
-        if (checkDiagonals(opponent, data, location)) {
-          return false;
-        }
-        if (checkKnights(opponent, data, location)) {
-          return false;
-        }
-        if (checkLines(opponent, data, location)) {
-          return false;
-        }
-      }
-      return true;
-    },
-    [activePlayer, setLocations]
-  );
-
-  const blockAboveLeft = useCallback(
-    data => {
-      let { row, col, opponent } = setLocations(data);
-
-      let threat;
-      for (let i = 1; row - i >= 0; i++) {
-        if (col - i >= 0) {
-          let diagonal = data[row - i][col - i];
-          if (diagonal.piece) {
-            threat = diagonal;
-          }
-        }
-      }
-      let endRow;
-      if (threat) {
-        [endRow] = threat.square;
-        endRow = +endRow;
-      }
-
-      for (let i = 1; i < row - endRow; i++) {
-        let location = data[row - i][col - i];
-        if (activePlayer === 'white') {
-          let pawn = data[row - i + 1][col - i];
-          if (
-            pawn.piece &&
-            pawn.piece.type === 'pawn' &&
-            pawn.piece.color === 'white'
-          ) {
-            return false;
-          }
-        } else {
-          let pawn = data[row - i - 1][col - i];
-          if (
-            pawn.piece &&
-            pawn.piece.type === 'pawn' &&
-            pawn.piece.color === 'black'
-          ) {
-            return false;
-          }
-        }
-        if (checkDiagonals(opponent, data, location)) {
-          return false;
-        }
-        if (checkKnights(opponent, data, location)) {
-          return false;
-        }
-        if (checkLines(opponent, data, location)) {
-          return false;
-        }
-      }
-      return true;
-    },
-    [activePlayer, setLocations]
-  );
-
-  const blockBelowRight = useCallback(
-    data => {
-      let { row, col, opponent } = setLocations(data);
-
-      let threat;
-      for (let i = 1; row + i <= 7; i++) {
-        if (col + i <= 7) {
-          let diagonal = data[row + i][col + i];
-          if (diagonal.piece) {
-            threat = diagonal;
-          }
-        }
-      }
-      let endRow;
-      if (threat) {
-        [endRow] = threat.square;
-        endRow = +endRow;
-      }
-
-      for (let i = 1; i < endRow - row; i++) {
-        let location = data[row + i][col + i];
-        if (activePlayer === 'white') {
-          let pawn = data[row + i + 1][col + i];
-          if (
-            pawn.piece &&
-            pawn.piece.type === 'pawn' &&
-            pawn.piece.color === 'white'
-          ) {
-            return false;
-          }
-        } else {
-          let pawn = data[row + i - 1][col + i];
-          if (
-            pawn.piece &&
-            pawn.piece.type === 'pawn' &&
-            pawn.piece.color === 'black'
-          ) {
-            return false;
-          }
-        }
-        if (checkDiagonals(opponent, data, location)) {
-          return false;
-        }
-        if (checkKnights(opponent, data, location)) {
-          return false;
-        }
-        if (checkLines(opponent, data, location)) {
+        if (
+          checkDiagonals(opponent, data, location) ||
+          checkKnights(opponent, data, location) ||
+          checkLines(opponent, data, location)
+        ) {
           return false;
         }
       }
@@ -368,18 +256,23 @@ const App = () => {
 
   const findBlockers = useCallback(
     data => {
-      if (blockAboveRight(data) || blockAboveLeft(data)) {
+      if (blockAboveRight(data)) {
         return true;
       }
       return false;
     },
-    [blockAboveRight, blockAboveLeft]
+    [blockAboveRight]
   );
 
   const checkMate = useCallback(
     (activePlayer, data) => {
       const { whiteKing, blackKing } = findKings(data);
-      let [row, col] = whiteKing.square;
+      let row, col;
+      if (activePlayer === 'white') {
+        [row, col] = whiteKing.square;
+      } else {
+        [row, col] = blackKing.square;
+      }
       row = +row;
       col = +col;
 
@@ -414,7 +307,7 @@ const App = () => {
       }
 
       let threats = findThreats(activePlayer, data, location);
-      if (possibleMoves.find(item => item)) {
+      if (possibleMoves.find(item => item === true)) {
         return false;
       } else if (threats.length > 1) {
         return true;
