@@ -24,7 +24,7 @@ button {
 }
 
 .game {
-  margin-top: 20px;
+  margin: 20px 0;
   border: 1px solid #888888;
 }
 
@@ -43,4 +43,9 @@ button {
 
 .piece {
   width: 100%;
+}
+
+.timer {
+  display: flex;
+  justify-content: space-evenly;
 }

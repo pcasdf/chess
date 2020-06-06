@@ -14,7 +14,10 @@ import findKings from './utilities/findKings';
 const App = () => {
   const [activePlayer, setActivePlayer] = useState('white');
   const [isCheck, setIsCheck] = useState(false);
+  const [checkmate, setCheckmate] = useState(false);
   const [activePiece, setActivePiece] = useState(null);
+  const [whiteTime, setWhiteTime] = useState(300);
+  const [blackTime, setBlackTime] = useState(300);
   const [board, setBoard] = useState(INITIAL_BOARD);
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState([
@@ -333,25 +336,50 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (checkIsCheck(board)) {
-      setIsCheck(true);
-    } else {
-      setIsCheck(false);
-    }
     if (checkMate(activePlayer, board)) {
-      console.log('checkmate');
+      setCheckmate(true);
+    } else {
+      if (checkIsCheck(board)) {
+        setIsCheck(true);
+      } else {
+        setIsCheck(false);
+      }
     }
   }, [board, checkIsCheck, activePlayer, checkMate]);
+
+  useEffect(() => {
+    if (activePlayer === 'white') {
+      const timer = setTimeout(() => {
+        setWhiteTime(prev => prev - 1);
+      }, 1000);
+      console.log(whiteTime);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setBlackTime(prev => prev - 1);
+      }, 1000);
+      console.log(blackTime);
+      return () => clearTimeout(timer);
+    }
+  }, [whiteTime, blackTime, activePlayer]);
+
+  const convertTime = player => {
+    const minutes = Math.floor(player / 60);
+    const secs = player % 60;
+    const seconds = secs === 0 ? '00' : secs < 10 ? `0${secs}` : secs;
+    return `${minutes}:${seconds}`;
+  };
 
   return (
     <div className='board'>
       <h1>
         {activePlayer}
         {isCheck && ', check'}
+        {checkmate && ', Checkmate! ' + activePlayer + ' wins'}
       </h1>
-      <div className='buttons'>
-        <button onClick={handlePrevious}>Previous</button>
-        <button onClick={handleNext}>Next</button>
+      <div className='timer'>
+        <span>{convertTime(whiteTime)}</span>
+        <span>{convertTime(blackTime)}</span>
       </div>
       <div className='game'>
         {board.map(row => (
@@ -370,6 +398,10 @@ const App = () => {
             ))}
           </div>
         ))}
+      </div>
+      <div className='buttons'>
+        <button onClick={handlePrevious}>Previous</button>
+        <button onClick={handleNext}>Next</button>
       </div>
     </div>
   );
